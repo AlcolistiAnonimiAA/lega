@@ -81,6 +81,8 @@ body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-s
 .albo-team.p1::before { content: '🥇 '; }
 .albo-team.p2::before { content: '🥈 '; }
 .albo-team.p3::before { content: '🥉 '; }
+.albo-team.p2 { color: var(--silver); }
+.albo-team.p3 { color: var(--bronze); }
 .albo-team.coppa::before { content: '🏆 '; }
 .albo-team.ultimo { color: var(--muted); font-size: 13px; }
 .albo-team.ultimo::before { content: '💀 '; }
@@ -481,6 +483,35 @@ select.stagione-picker:focus { border-color: var(--accent); }
   }
 }
 
+
+/* REGOLAMENTO */
+.reg-article { margin-bottom: 36px; }
+.reg-article-title { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: .04em; color: var(--accent); margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+.reg-subtitle { font-size: 13px; font-weight: 500; color: var(--text); margin: 14px 0 6px; letter-spacing: .02em; }
+.reg-text { font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 8px; }
+.reg-list { list-style: none; padding: 0; margin: 6px 0 10px; }
+.reg-list li { font-size: 13px; color: var(--muted); line-height: 1.6; padding: 3px 0 3px 18px; position: relative; }
+.reg-list li::before { content: '–'; position: absolute; left: 0; color: var(--accent); }
+.reg-table { width: 100%; border-collapse: collapse; margin: 12px 0 16px; font-size: 13px; }
+.reg-table th { text-align: left; padding: 8px 12px; background: var(--surface2); color: var(--muted); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+.reg-table td { padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.04); color: var(--text); }
+.reg-table tr:hover td { background: var(--surface2); }
+.reg-title-main { font-family: 'Bebas Neue', sans-serif; font-size: 42px; letter-spacing: .04em; color: #fff; margin-bottom: 6px; line-height: 1; }
+.reg-subtitle-main { font-size: 13px; color: var(--muted); margin-bottom: 36px; }
+.reg-participants { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px; margin: 10px 0 16px; }
+.reg-participant { background: var(--surface2); border-radius: 6px; padding: 10px 14px; font-size: 13px; }
+.reg-participant strong { color: var(--accent); display: block; font-size: 12px; font-weight: 500; }
+.reg-firma { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); }
+.reg-firma-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-top: 16px; }
+.reg-firma-item { font-size: 13px; color: var(--muted); padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+@media (max-width: 640px) {
+  .reg-article-title { font-size: 20px; }
+  .reg-title-main { font-size: 30px; }
+  .reg-table { font-size: 12px; }
+  .reg-table th, .reg-table td { padding: 6px 8px; }
+  .reg-participants { grid-template-columns: 1fr 1fr; }
+}
+
 </style>
 </head>
 <body>
@@ -497,20 +528,21 @@ select.stagione-picker:focus { border-color: var(--accent); }
 </div>
 
 <div class="tabs">
-  <button class="tab active" onclick="showTab('albo', this)">Albo d'oro</button>
+  <button class="tab active" onclick="showTab('stagioni', this)">Stagioni</button>
+  <button class="tab" onclick="showTab('albo', this)">Albo d'oro</button>
   <button class="tab" onclick="showTab('palmares', this)">Palmares</button>
   <button class="tab" onclick="showTab('ranking', this)">Ranking storico</button>
   <button class="tab" onclick="showTab('scontri-camp', this)">Scontri diretti campionato</button>
   <button class="tab" onclick="showTab('scontri-coppa', this)">Scontri diretti coppa</button>
   <button class="tab" onclick="showTab('acquisti', this)">Acquisti più costosi</button>
   <button class="tab" onclick="showTab('flussi', this)">Flussi di cassa</button>
-  <button class="tab" onclick="showTab('stagioni', this)">Stagioni</button>
+  <button class="tab" onclick="showTab('regolamento', this)">Regolamento</button>
 </div>
 
 <div class="content">
 
   <!-- ALBO D'ORO -->
-  <div id="albo" class="section active">
+  <div id="albo" class="section">
     <div class="section-title">Albo d'Oro</div>
     <div class="section-desc">Il podio, la Coppa e l'ultimo classificato stagione per stagione.</div>
     <div class="albo-grid">
@@ -581,7 +613,7 @@ select.stagione-picker:focus { border-color: var(--accent); }
 
 
   <!-- STAGIONI -->
-  <div id="stagioni" class="section">
+  <div id="stagioni" class="section active">
     <div class="section-title">Stagioni</div>
     <div class="section-desc">Asta, campionato e coppa stagione per stagione.</div>
     <div class="stagioni-select-wrap">
@@ -599,6 +631,204 @@ select.stagione-picker:focus { border-color: var(--accent); }
       </select>
     </div>
     <div id="stagioneContent"></div>
+  </div>
+
+
+  <!-- REGOLAMENTO -->
+  <div id="regolamento" class="section">
+    <div class="reg-title-main">Regolamento Ufficiale</div>
+    <div class="reg-subtitle-main">Lega Alcolisti Anonimi AA — Fantacalcio Classico</div>
+
+    <div class="reg-article">
+      <div class="reg-article-title">Art. 1 — Partecipanti</div>
+      <p class="reg-text">La lega è composta da 8 squadre, ciascuna gestita da un partecipante.</p>
+      <div class="reg-participants">
+        <div class="reg-participant"><strong>Psv Endovena</strong>Gabriele Bassoli</div>
+        <div class="reg-participant"><strong>Atletico Whalid</strong>Andrea Olivieri</div>
+        <div class="reg-participant"><strong>Patatinaikos</strong>Giacomo Pelati</div>
+        <div class="reg-participant"><strong>ThePinkBlackEagles</strong>Riccardo Terrasi</div>
+        <div class="reg-participant"><strong>Brazzers</strong>Marco Staffetti</div>
+        <div class="reg-participant"><strong>Team SHISH</strong>Davide Artioli</div>
+        <div class="reg-participant"><strong>Virtus Basaglia</strong>Daniele Gasparini</div>
+        <div class="reg-participant"><strong>PeScaramanzia</strong>Luca Pedroni</div>
+      </div>
+    </div>
+
+    <div class="reg-article">
+      <div class="reg-article-title">Art. 2 — Modalità di gioco</div>
+      <p class="reg-text">La lega seguirà le regole del Fantacalcio Classico con modulo a scontri diretti e calendario a girone all'italiana (andata e ritorno).</p>
+      <ul class="reg-list">
+        <li>Durata: dalla prima giornata post-asta estiva alla 38ª giornata di Serie A</li>
+        <li>Piattaforma: Leghe Fantagazzetta</li>
+      </ul>
+    </div>
+
+    <div class="reg-article">
+      <div class="reg-article-title">Art. 3 — Asta iniziale</div>
+      <div class="reg-subtitle">Budget iniziale</div>
+      <p class="reg-text">Ogni squadra ha a disposizione 500 fantamilioni. Quotazione minima per ogni calciatore: 1 credito.</p>
+      <div class="reg-subtitle">Modalità d'asta</div>
+      <p class="reg-text">Asta "all'inglese" (a chiamata): ogni partecipante, a turno, nomina un calciatore da mettere all'asta. Gli altri effettuano rilanci fino all'aggiudicazione.</p>
+      <div class="reg-subtitle">Ordine di chiamata</div>
+      <p class="reg-text">Il campione in carica apre l'asta con la prima chiamata; si prosegue in senso antiorario.</p>
+      <div class="reg-subtitle">Composizione della rosa (25 calciatori obbligatori)</div>
+      <ul class="reg-list">
+        <li>3 Portieri</li>
+        <li>8 Difensori</li>
+        <li>8 Centrocampisti</li>
+        <li>6 Attaccanti</li>
+      </ul>
+      <p class="reg-text">Una volta acquistato, un calciatore non può essere svincolato fino all'asta di riparazione. Al termine dell'asta sono possibili scambi tra squadre.</p>
+    </div>
+
+    <div class="reg-article">
+      <div class="reg-article-title">Art. 4 — Formazione</div>
+      <p class="reg-text">La formazione va inviata entro l'orario di inizio della prima partita di giornata. Moduli consentiti: 3-4-3, 3-5-2, 4-3-3, 4-4-2, 4-5-1, 5-3-2, 5-4-1.</p>
+      <p class="reg-text">In caso di mancato invio, viene usata l'ultima formazione disponibile ma il risultato è annullato e si applica una penalizzazione in classifica (punteggio fanta = 0).</p>
+      <div class="reg-subtitle">Panchina</div>
+      <p class="reg-text">11 titolari + 14 panchinari. Nessuna restrizione al numero di giocatori in panchina.</p>
+      <div class="reg-subtitle">Switch con cambio di modulo</div>
+      <p class="reg-text">Si seleziona manualmente un titolare e lo si abbina a un panchinaro. Se il titolare non parte dal primo minuto, lo switch è automatico — indipendentemente dalla situazione reale del panchinaro.</p>
+    </div>
+
+    <div class="reg-article">
+      <div class="reg-article-title">Art. 5 — Punteggi</div>
+      <div class="reg-subtitle">Soglie Gol</div>
+      <p class="reg-text">Il primo gol si ottiene con 66 punti; ogni 4 punti aggiuntivi corrisponde un gol ulteriore.</p>
+      <table class="reg-table">
+        <thead><tr><th>Fantapunti</th><th>Gol assegnati</th></tr></thead>
+        <tbody>
+          <tr><td>Fino a 65,5</td><td>0 gol</td></tr>
+          <tr><td>Da 66 a 69,5</td><td>1 gol</td></tr>
+          <tr><td>Da 70 a 73,5</td><td>2 gol</td></tr>
+          <tr><td>Da 74 a 77,5</td><td>3 gol</td></tr>
+          <tr><td>Da 78 a 81,5</td><td>4 gol</td></tr>
+          <tr><td>Da 82 a 85,5</td><td>5 gol</td></tr>
+          <tr><td>Da 86 a 89,5</td><td>6 gol</td></tr>
+        </tbody>
+      </table>
+      <div class="reg-subtitle">Bonus/Malus</div>
+      <table class="reg-table">
+        <thead><tr><th>Evento</th><th>Valore</th></tr></thead>
+        <tbody>
+          <tr><td>Gol segnati</td><td>+3</td></tr>
+          <tr><td>Gol subiti</td><td>–1</td></tr>
+          <tr><td>Rigori segnati</td><td>+3</td></tr>
+          <tr><td>Rigori sbagliati</td><td>–3</td></tr>
+          <tr><td>Rigori parati</td><td>+3</td></tr>
+          <tr><td>Ammonizioni</td><td>–0,5</td></tr>
+          <tr><td>Espulsioni</td><td>–1</td></tr>
+          <tr><td>Assist</td><td>+1</td></tr>
+          <tr><td>Autogol</td><td>–2</td></tr>
+        </tbody>
+      </table>
+      <div class="reg-subtitle">Modificatore Difesa</div>
+      <p class="reg-text">Si applica con almeno 4 difensori titolari. Si calcola la media dei 3 migliori difensori + il portiere (solo voti, senza bonus/malus).</p>
+      <table class="reg-table">
+        <thead><tr><th>Media voti difesa</th><th>Bonus</th></tr></thead>
+        <tbody>
+          <tr><td>6,00 – 6,24</td><td>+1 punto</td></tr>
+          <tr><td>6,25 – 6,49</td><td>+1,5 punti</td></tr>
+          <tr><td>6,50 – 6,74</td><td>+2 punti</td></tr>
+          <tr><td>6,75 – 6,99</td><td>+2,5 punti</td></tr>
+          <tr><td>7,00 in su</td><td>+3 punti</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="reg-article">
+      <div class="reg-article-title">Art. 6 — Asta di riparazione</div>
+      <div class="reg-subtitle">Svincoli</div>
+      <ul class="reg-list">
+        <li>La quota di svincolo = valore attuale del giocatore (non il prezzo d'acquisto)</li>
+        <li>Nessun svincolo durante l'asta: tutti da comunicare prima dell'inizio</li>
+        <li>Nessun limite al numero di svincolabili</li>
+        <li>Se si svincola e si riacquista lo stesso giocatore, il rilancio minimo = prezzo di svincolo</li>
+      </ul>
+      <div class="reg-subtitle">Budget disponibile</div>
+      <ul class="reg-list">
+        <li>Crediti residui dall'asta estiva</li>
+        <li>Totale ricavato dagli svincoli</li>
+        <li>+50 crediti bonus per tutti</li>
+      </ul>
+      <div class="reg-subtitle">Ordine di chiamata</div>
+      <p class="reg-text">A turni; ordine dei ruoli fisso: Portieri → Difensori → Centrocampisti → Attaccanti.</p>
+    </div>
+
+    <div class="reg-article">
+      <div class="reg-article-title">Art. 7 — Competizioni</div>
+      <div class="reg-subtitle">Campionato</div>
+      <p class="reg-text">Formato a gironi all'italiana. Con 8 squadre un girone completo prevede 7 giornate. Il numero di giri dipende dalla lunghezza della stagione.</p>
+      <ul class="reg-list">
+        <li>Vittoria: 3 punti — Pareggio: 1 punto — Sconfitta: 0 punti</li>
+        <li>Nessun fattore campo: tutte le sfide in campo neutro</li>
+      </ul>
+      <div class="reg-subtitle">Coppa</div>
+      <p class="reg-text">Due fasi: gironi (2 gruppi da 4, andata e ritorno = 6 giornate) ed eliminazione diretta (semifinali A/R + finale secca). Passano le prime 2 di ogni girone.</p>
+      <p class="reg-text">La Coppa si disputa a giornate alterne rispetto alla Serie A. Rinvii di Serie A in un turno di Coppa: l'intero turno è annullato e recuperato successivamente.</p>
+      <div class="reg-subtitle">Criteri di classifica (in caso di parità)</div>
+      <ul class="reg-list">
+        <li>Punti in classifica</li>
+        <li>Somma totale dei fantapunti</li>
+        <li>Differenza reti</li>
+        <li>Gol fatti → Gol subiti → Classifica avulsa</li>
+      </ul>
+    </div>
+
+    <div class="reg-article">
+      <div class="reg-article-title">Art. 8 — Quote e Premi</div>
+      <p class="reg-text">Quota di iscrizione: €50 a partecipante — Montepremi totale: €400.</p>
+      <div class="reg-subtitle">Campionato</div>
+      <ul class="reg-list">
+        <li>1° classificato: €160</li>
+        <li>2° classificato: €115</li>
+        <li>3° classificato: €75</li>
+      </ul>
+      <div class="reg-subtitle">Coppa</div>
+      <ul class="reg-list">
+        <li>Vincitore: €50 + €5 prelevati dal fondo dell'ultimo classificato in campionato</li>
+      </ul>
+    </div>
+
+    <div class="reg-article">
+      <div class="reg-article-title">Art. 9 — Ranking Ufficiale</div>
+      <p class="reg-text">Ogni squadra parte da 10 punti base moltiplicati al termine di ogni stagione in base ai risultati.</p>
+      <div class="reg-subtitle">Moltiplicatori</div>
+      <ul class="reg-list">
+        <li>1° posto in Campionato: × 1,7</li>
+        <li>2° posto in Campionato: × 1,5</li>
+        <li>3° posto in Campionato: × 1,3</li>
+        <li>Ultimo posto in Campionato: × 0,9</li>
+        <li>Vincitore della Coppa: × 1,4</li>
+        <li>Dal 4° al 7° posto: nessun moltiplicatore</li>
+      </ul>
+      <p class="reg-text">Le prime 4 squadre del ranking sono teste di serie per la fase a gironi della Coppa della stagione successiva.</p>
+    </div>
+
+    <div class="reg-article">
+      <div class="reg-article-title">Art. 10 — Gestione dei rinvii</div>
+      <p class="reg-text">Se una o più partite di Serie A vengono rinviate a oltre 10 giorni dalla data ufficiale, si calcola lo svantaggio per squadra:</p>
+      <ul class="reg-list">
+        <li>Portiere coinvolto: +1 punto</li>
+        <li>Difensori coinvolti: –1 punto ciascuno</li>
+        <li>Centrocampisti coinvolti: –2 punti ciascuno</li>
+        <li>Attaccanti coinvolti: –3 punti ciascuno</li>
+      </ul>
+      <p class="reg-text">Se una squadra totalizza almeno 7 punti di svantaggio, l'intera giornata fantacalcistica è rinviata e recuperata al primo turno disponibile. I giocatori titolari indisponibili per la partita rinviata ricevono un 6 politico.</p>
+    </div>
+
+    <div class="reg-firma">
+      <p class="reg-text">Con l'iscrizione alla lega, ogni partecipante accetta integralmente il presente regolamento.</p>
+      <div class="reg-firma-grid">
+        <div class="reg-firma-item">Daniele Gasparini</div>
+        <div class="reg-firma-item">Luca Pedroni</div>
+        <div class="reg-firma-item">Andrea Olivieri</div>
+        <div class="reg-firma-item">Davide Artioli</div>
+        <div class="reg-firma-item">Giacomo Pelati</div>
+        <div class="reg-firma-item">Marco Staffetti</div>
+        <div class="reg-firma-item">Riccardo Terrasi</div>
+      </div>
+    </div>
   </div>
 
 </div>
